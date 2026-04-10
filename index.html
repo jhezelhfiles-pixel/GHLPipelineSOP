@@ -2,258 +2,334 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Pipeline SOP Dashboard</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline SOP Guide</title>
 <style>
 body {
-    font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: #fff;
-    margin: 0;
-    padding: 30px;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f5f6fa;
 }
 
 h1 {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  padding: 20px;
 }
 
-/* GRID */
 .container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
+  padding: 20px;
 }
 
-/* COLUMN */
 .column {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 12px;
-    min-height: 500px;
+  flex: 1;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .column h2 {
-    text-align: center;
-    margin-bottom: 20px;
+  text-align: center;
 }
 
-/* BUTTON */
-.btn {
-    display: block;
-    width: 100%;
-    margin: 8px 0;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background: #334155;
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
+button {
+  width: 100%;
+  margin: 5px 0;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  background: #2f80ed;
+  color: white;
+  cursor: pointer;
 }
 
-.btn:hover {
-    background: #3b82f6;
+button:hover {
+  background: #1c60c7;
 }
 
-/* MODAL */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.7);
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
 }
 
 .modal-content {
-    background: #1e293b;
-    margin: 5% auto;
-    padding: 25px;
-    width: 60%;
-    border-radius: 12px;
+  background-color: white;
+  margin: 10% auto;
+  padding: 20px;
+  width: 60%;
+  border-radius: 10px;
 }
 
 .close {
-    float: right;
-    font-size: 22px;
-    cursor: pointer;
+  float: right;
+  font-size: 20px;
+  cursor: pointer;
 }
 </style>
 </head>
-
 <body>
 
-<h1>Pipeline SOP Dashboard</h1>
+<h1>Pipeline SOP Guide</h1>
 
 <div class="container">
 
-    <!-- ONBOARDING -->
-    <div class="column">
-        <h2>Onboarding</h2>
+<div class="column">
+<h2>Onboarding Pipeline</h2>
+<button onclick="openModal('hold')">Hold – Deposit Only</button>
+<button onclick="openModal('kickoff')">Kickoff Call</button>
+<button onclick="openModal('booked')">Booked for Onboarding</button>
+<button onclick="openModal('kyc')">Waiting for KYC/KYB Approval</button>
+<button onclick="openModal('funding')">Waiting to Go Live (Funding Pending)</button>
+<button onclick="openModal('live')">Live & Connected</button>
+<button onclick="openModal('pause')">On Pause (Client Request)</button>
+<button onclick="openModal('nonresponsive')">Non-Responsive</button>
+<button onclick="openModal('refund')">Refund Requested</button>
+</div>
 
-        <button class="btn" onclick="openModal('hold')">Hold – Deposit Only</button>
-        <button class="btn" onclick="openModal('kickoff')">Kickoff Call</button>
-        <button class="btn" onclick="openModal('booked')">Booked for Onboarding</button>
-        <button class="btn" onclick="openModal('kyc')">Waiting for KYC/KYB Approval</button>
-        <button class="btn" onclick="openModal('funding')">Waiting to Go Live (Funding Pending)</button>
-        <button class="btn" onclick="openModal('live')">Live & Connected</button>
-        <button class="btn" onclick="openModal('pause')">On Pause (Client Request)</button>
-        <button class="btn" onclick="openModal('nonresponsive')">Non-Responsive</button>
-    </div>
+<div class="column">
+<h2>Active Pipeline</h2>
+<button onclick="openModal('coming')">To be updated</button>
+</div>
 
-    <!-- ACTIVE -->
-    <div class="column">
-        <h2>Active</h2>
-
-        <button class="btn" onclick="openModal('<30days')">Live</button>
-    </div>
-
-    <!-- REFUND -->
-    <div class="column">
-        <h2>Refund</h2>
-
-        <button class="btn" onclick="openModal('refund')">Refund Requested</button>
-    </div>
+<div class="column">
+<h2>Refund Pipeline</h2>
+<button onclick="openModal('coming')">To be updated</button>
+</div>
 
 </div>
 
-<!-- MODAL -->
 <div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <div id="modal-body"></div>
-    </div>
+<div class="modal-content">
+<span class="close" onclick="closeModal()">&times;</span>
+<div id="modal-text"></div>
+</div>
 </div>
 
 <script>
-const content = {
+function openModal(type) {
+  const modal = document.getElementById("modal");
+  const text = document.getElementById("modal-text");
 
-hold: `
-<h2>Hold – Deposit Only</h2>
-<p><b>Responsible:</b> Sales</p>
-<p>Clients with partial payment. Onboarding is on hold.</p>
-<ul>
-<li>Full onboarding requires full payment</li>
-<li>Early onboarding needs approval</li>
-</ul>
-<p><b>Action:</b></p>
-<ul>
-<li>Follow up for balance</li>
-<li>Submit approval if needed</li>
-</ul>
-`,
+  let content = "";
 
-kickoff: `
-<h2>Kickoff Call</h2>
-<p><b>Responsible:</b> Sales</p>
-<p>Initial call to finalize deal and expectations.</p>
-<ul>
-<li>Confirm commitment</li>
-<li>Align expectations</li>
-</ul>
-<p><b>Action:</b></p>
-<ul>
-<li>Conduct call</li>
-<li>Transition to AM</li>
-</ul>
-`,
+  if (type === 'hold') {
+    content = `<h3>Hold – Deposit Only</h3>
+    <b>Responsible:</b> Sales
+    <ul>
+    <li><b>Overview:</b> Clients who have made a partial payment but have not yet completed the full required funding. Onboarding is temporarily on hold at this stage.</li>
+    <li><b>Key Notes:</b>
+      <ul>
+        <li>Full onboarding cannot proceed until payment is completed</li>
+        <li>In select cases, Sales may request early onboarding with a deposit only</li>
+        <li>Early onboarding requires internal approval</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Follow up with client for remaining balance</li>
+        <li>Submit approval request if early onboarding is needed</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-booked: `
-<h2>Booked for Onboarding</h2>
-<p><b>Responsible:</b> Account Manager</p>
-<p>Client signed and scheduled.</p>
-<ul>
-<li>Auto intro email triggered</li>
-<li>Sales → AM handoff</li>
-</ul>
-<p><b>Action:</b></p>
-<ul>
-<li>Prepare onboarding</li>
-<li>Confirm meeting</li>
-</ul>
-`,
+  if (type === 'kickoff') {
+    content = `<h3>Kickoff Call</h3>
+    <b>Responsible:</b> Sales
+    <ul>
+    <li><b>Overview:</b> Initial engagement call where the deal is finalized, and client expectations are clearly established prior to onboarding.</li>
+    <li><b>Key Notes:</b>
+      <ul>
+        <li>Confirms client commitment and readiness</li>
+        <li>Reviews product/service scope, timelines, and next steps</li>
+        <li>Aligns expectations on performance, risks, and onboarding process</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Conduct call and confirm agreement</li>
+        <li>Ensure client understands onboarding requirements</li>
+        <li>Transition client to Account Management</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-kyc: `
-<h2>Waiting for KYC/KYB Approval</h2>
-<p><b>Responsible:</b> Account Manager</p>
-<p>Verification in progress.</p>
-<ul>
-<li>Broker-dependent timeline</li>
-</ul>
-<p><b>Action:</b></p>
-<ul>
-<li>Assist submission</li>
-<li>Follow up</li>
-</ul>
-`,
+  if (type === 'booked') {
+    content = `<h3>Booked for Onboarding</h3>
+    <b>Responsible:</b> Account Manager
+    <ul>
+    <li><b>Overview:</b> Client has signed the contract and is officially scheduled for onboarding with the Account Manager.</li>
+    <li><b>Key Notes:</b>
+      <ul>
+        <li>Automated introduction email is triggered upon booking</li>
+        <li>Marks formal handoff from Sales to Account Management</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Prepare onboarding materials</li>
+        <li>Confirm scheduled meeting</li>
+        <li>Initiate client relationship and onboarding guidance</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-funding: `
-<h2>Waiting to Go Live (Funding Pending)</h2>
-<p><b>Responsible:</b> Account Manager</p>
-<p>Setup complete, awaiting funds.</p>
-<p><b>Action:</b></p>
-<ul>
-<li>Confirm instructions</li>
-<li>Track transfer</li>
-</ul>
-`,
+  if (type === 'kyc') {
+    content = `<h3>Waiting for KYC/KYB Approval</h3>
+    <b>Responsible:</b> Account Manager
+    <ul>
+    <li><b>Overview:</b> Client is undergoing brokerage account setup, including identity verification (KYC/KYB).</li>
+    <li><b>Key Notes:</b>
+      <ul>
+        <li>Includes account registration and document submission</li>
+        <li>Timeline depends on broker processing speed</li>
+        <li>Delays may occur due to incomplete or incorrect documentation</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Assist client with submission requirements</li>
+        <li>Monitor verification progress</li>
+        <li>Follow up with broker if needed</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-live: `
-<h2>Live & Connected</h2>
-<p><b>Responsible:</b> Account Manager</p>
-<p>Account is active and trading.</p>
-<p><b>Action:</b></p>
-<ul>
-<li>Monitor performance</li>
-<li>Provide updates</li>
-</ul>
-`,
+  if (type === 'funding') {
+    content = `<h3>Waiting to Go Live (Funding Pending)</h3>
+    <b>Responsible:</b> Account Manager
+    <ul>
+    <li><b>Overview:</b> All systems and accounts are set up, but trading has not yet started due to pending fund transfer.</li>
+    <li><b>Key Notes:</b>
+      <ul>
+        <li>Funding timelines vary based on broker and payment method</li>
+        <li>No trading activity until funds are fully received and allocated</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Confirm funding instructions with client</li>
+        <li>Track transfer status</li>
+        <li>Coordinate with broker for confirmation</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-pause: `
-<h2>On Pause (Client Request)</h2>
-<p><b>Responsible:</b> Account Manager</p>
-<p>Activity paused by client.</p>
-<p><b>Action:</b></p>
-<ul>
-<li>Document reason</li>
-<li>Follow up</li>
-</ul>
-`,
+  if (type === 'live') {
+    content = `<h3>Live & Connected</h3>
+    <b>Responsible:</b> Account Manager
+    <ul>
+    <li><b>Overview:</b> The client account is fully operational, funded, and actively trading.</li>
+    <li><b>Key Notes:</b>
+      <ul>
+        <li>System is live and executing trades</li>
+        <li>Client is now in active account management phase</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Monitor account performance</li>
+        <li>Provide regular updates and support</li>
+        <li>Ensure client satisfaction and retention</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-nonresponsive: `
-<h2>Non-Responsive</h2>
-<p><b>Responsible:</b> Account Manager</p>
-<p>No response after multiple attempts.</p>
-<p><b>Action:</b></p>
-<ul>
-<li>Log attempts</li>
-<li>Send final notice</li>
-</ul>
-`,
+  if (type === 'pause') {
+    content = `<h3>On Pause (Client Request)</h3>
+    <b>Responsible:</b> Account Manager
+    <ul>
+    <li><b>Overview:</b> Onboarding or trading activity is temporarily paused at the client’s request.</li>
+    <li><b>Common Reasons:</b>
+      <ul>
+        <li>Pending funds availability</li>
+        <li>IRA or compliance processing</li>
+        <li>Personal or financial readiness</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Document reason for pause</li>
+        <li>Maintain periodic follow-ups</li>
+        <li>Resume onboarding once client is ready</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-refund: `
-<h2>Refund Requested</h2>
-<p><b>Responsible:</b> Account Manager</p>
-<p>Client requested refund.</p>
-<p><b>Action:</b></p>
-<ul>
-<li>Move deal</li>
-<li>Submit request</li>
-<li>Send to Slack</li>
-<li>Update GHL</li>
-</ul>
-`
+  if (type === 'nonresponsive') {
+    content = `<h3>Non-Responsive</h3>
+    <b>Responsible:</b> Account Manager
+    <ul>
+    <li><b>Overview:</b> Client has not responded after multiple outreach attempts.</li>
+    <li><b>Criteria:</b>
+      <ul>
+        <li>Minimum of three consecutive follow-ups with no response</li>
+        <li>Occurs after initial onboarding scheduling</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Log all outreach attempts</li>
+        <li>Send final follow-up notice</li>
+        <li>Escalate or reassign if necessary</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-};
+  if (type === 'refund') {
+    content = `<h3>Refund Requested</h3>
+    <b>Responsible:</b> Account Manager
+    <ul>
+    <li><b>Overview:</b> The client has formally requested a refund.</li>
+    <li><b>Key Notes:</b>
+      <ul>
+        <li>De-escalation efforts must be attempted prior to processing</li>
+        <li>If client confirms intent, case proceeds to refund stage</li>
+      </ul>
+    </li>
+    <li><b>Action Required:</b>
+      <ul>
+        <li>Move deal to this stage</li>
+        <li>Submit refund request using required template</li>
+        <li>Send details to #cast-endorsement (Slack)</li>
+        <li>Update all relevant notes in GHL</li>
+      </ul>
+    </li>
+    </ul>`;
+  }
 
-function openModal(key) {
-    document.getElementById("modal-body").innerHTML = content[key];
-    document.getElementById("modal").style.display = "block";
+  if (type === 'coming') {
+    content = `<h3>To be updated</h3><p>Content will be added soon.</p>`;
+  }
+
+  text.innerHTML = content;
+  modal.style.display = "block";
 }
 
 function closeModal() {
-    document.getElementById("modal").style.display = "none";
+  document.getElementById("modal").style.display = "none";
+}
+
+window.onclick = function(event) {
+  const modal = document.getElementById("modal");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 }
 </script>
 
