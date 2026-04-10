@@ -11,9 +11,24 @@ body {
   background: #f4f6fb;
 }
 
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.search {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  width: 250px;
+}
+
 h1 {
   text-align: center;
-  padding: 20px;
+  margin: 0;
+  padding-bottom: 10px;
   color: #1f2a44;
 }
 
@@ -36,28 +51,17 @@ h1 {
   margin-bottom: 10px;
 }
 
-.search {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-}
-
 button {
   width: 100%;
   margin: 6px 0;
   padding: 10px;
   border: none;
   border-radius: 8px;
+  background: #2f80ed;
   color: white;
   cursor: pointer;
   transition: 0.2s;
 }
-
-.sales { background: #2f80ed; }
-.am { background: #27ae60; }
-.risk { background: #eb5757; }
 
 button:hover {
   transform: scale(1.03);
@@ -98,39 +102,40 @@ button:hover {
 </head>
 <body>
 
+<div class="header">
+  <input class="search" id="globalSearch" placeholder="Search all stages..." onkeyup="filterAll()">
+</div>
+
 <h1>Pipeline SOP Guide</h1>
 
 <div class="container">
 
 <div class="column">
 <h2>Onboarding Pipeline</h2>
-<input class="search" placeholder="Search..." onkeyup="filterButtons(this, 'onboarding')">
-<div id="onboarding">
-<button class="sales" onclick="openModal('hold')">Hold – Deposit Only</button>
-<button class="sales" onclick="openModal('kickoff')">Kickoff Call</button>
-<button class="am" onclick="openModal('booked')">Booked for Onboarding</button>
-<button class="am" onclick="openModal('kyc')">Waiting for KYC/KYB Approval</button>
-<button class="am" onclick="openModal('funding')">Waiting to Go Live (Funding Pending)</button>
-<button class="am" onclick="openModal('live')">Live & Connected</button>
-<button class="am" onclick="openModal('pause')">On Pause (Client Request)</button>
-<button class="am" onclick="openModal('nonresponsive')">Non-Responsive</button>
-<button class="risk" onclick="openModal('refund')">Refund Requested</button>
+<div class="stage-group">
+<button onclick="openModal('hold')">Hold – Deposit Only</button>
+<button onclick="openModal('kickoff')">Kickoff Call</button>
+<button onclick="openModal('booked')">Booked for Onboarding</button>
+<button onclick="openModal('kyc')">Waiting for KYC/KYB Approval</button>
+<button onclick="openModal('funding')">Waiting to Go Live (Funding Pending)</button>
+<button onclick="openModal('live')">Live & Connected</button>
+<button onclick="openModal('pause')">On Pause (Client Request)</button>
+<button onclick="openModal('nonresponsive')">Non-Responsive</button>
+<button onclick="openModal('refund')">Refund Requested</button>
 </div>
 </div>
 
 <div class="column">
 <h2>Active Pipeline</h2>
-<input class="search" placeholder="Search..." onkeyup="filterButtons(this, 'active')">
-<div id="active">
-<button class="am" onclick="openModal('coming')">To be updated</button>
+<div class="stage-group">
+<button onclick="openModal('coming')">To be updated</button>
 </div>
 </div>
 
 <div class="column">
 <h2>Refund Pipeline</h2>
-<input class="search" placeholder="Search..." onkeyup="filterButtons(this, 'refundpipe')">
-<div id="refundpipe">
-<button class="risk" onclick="openModal('coming')">To be updated</button>
+<div class="stage-group">
+<button onclick="openModal('coming')">To be updated</button>
 </div>
 </div>
 
@@ -144,9 +149,10 @@ button:hover {
 </div>
 
 <script>
-function filterButtons(input, containerId) {
-  const filter = input.value.toLowerCase();
-  const buttons = document.getElementById(containerId).getElementsByTagName('button');
+function filterAll() {
+  const filter = document.getElementById('globalSearch').value.toLowerCase();
+  const buttons = document.getElementsByTagName('button');
+
   for (let i = 0; i < buttons.length; i++) {
     let txt = buttons[i].innerText.toLowerCase();
     buttons[i].style.display = txt.includes(filter) ? '' : 'none';
@@ -156,7 +162,6 @@ function filterButtons(input, containerId) {
 function openModal(type) {
   const modal = document.getElementById("modal");
   const text = document.getElementById("modal-text");
-  let content = "";
 
   const data = {
     hold: `<h3>Hold – Deposit Only</h3><b>Responsible:</b> Sales<ul><li><b>Overview:</b> Clients who have made a partial payment but have not yet completed the full required funding. Onboarding is temporarily on hold at this stage.</li><li><b>Key Notes:</b><ul><li>Full onboarding cannot proceed until payment is completed</li><li>In select cases, Sales may request early onboarding with a deposit only</li><li>Early onboarding requires internal approval</li></ul></li><li><b>Action Required:</b><ul><li>Follow up with client for remaining balance</li><li>Submit approval request if early onboarding is needed</li></ul></li></ul>`,
@@ -171,8 +176,7 @@ function openModal(type) {
     coming: `<h3>To be updated</h3><p>Content will be added soon.</p>`
   };
 
-  content = data[type];
-  text.innerHTML = content;
+  document.getElementById("modal-text").innerHTML = data[type];
   modal.style.display = "block";
 }
 
