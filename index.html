@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pipeline Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      margin: 0;
+      background: #f4f6f9;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .column {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .column h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #f1f3f7;
+      cursor: pointer;
+      text-align: left;
+      transition: 0.2s ease;
+      font-size: 14px;
+    }
+
+    .btn:hover {
+      background: #e0e7ff;
+      transform: translateX(4px);
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>Pipeline Dashboard</header>
+
+<div class="container">
+
+  <!-- ACTIVE -->
+  <div class="column">
+    <h2>Active</h2>
+
+    <button class="btn" onclick="openLink('https://example.com/live')">Live</button>
+    <button class="btn" onclick="openLink('https://example.com/30day')">30-Day Review</button>
+    <button class="btn" onclick="openLink('https://example.com/90day')">90-Day Review</button>
+    <button class="btn" onclick="openLink('https://example.com/120day')">120-Day Review</button>
+    <button class="btn" onclick="openLink('https://example.com/active-client')">Active Client</button>
+    <button class="btn" onclick="openLink('https://example.com/refund-requested')">Refund Requested</button>
+    <button class="btn" onclick="openLink('https://example.com/dnd')">DND by Management</button>
+
+  </div>
+
+  <!-- ONBOARDING -->
+  <div class="column">
+    <h2>Onboarding</h2>
+
+    <button class="btn" onclick="openLink('https://example.com/hold')">Hold – Deposit Only</button>
+    <button class="btn" onclick="openLink('https://example.com/kickoff')">Kickoff Call</button>
+    <button class="btn" onclick="openLink('https://example.com/kyc')">Independent KYC/KYB</button>
+    <button class="btn" onclick="openLink('https://example.com/kyc-approval')">Waiting for KYC/KYB Approval</button>
+    <button class="btn" onclick="openLink('https://example.com/funding')">Waiting for Funding</button>
+    <button class="btn" onclick="openLink('https://example.com/connect')">Waiting To Go Live & Connect</button>
+    <button class="btn" onclick="openLink('https://example.com/live-connected')">Live & Connected</button>
+    <button class="btn" onclick="openLink('https://example.com/non-responsive')">Non-Responsive / Not Ready</button>
+    <button class="btn" onclick="openLink('https://example.com/onboarding-refund')">Refund Requested</button>
+    <button class="btn" onclick="openLink('https://example.com/not-client')">Not a Client (Jhezel to Review)</button>
+
+  </div>
+
+  <!-- REFUND -->
+  <div class="column">
+    <h2>Refund</h2>
+
+    <button class="btn" onclick="openLink('https://example.com/refund-requested')">Refund – Requested</button>
+    <button class="btn" onclick="openLink('https://example.com/review')">Refund – Review in Progress</button>
+    <button class="btn" onclick="openLink('https://example.com/sales')">Refund – Passed to Sales</button>
+    <button class="btn" onclick="openLink('https://example.com/founder')">Refund – Booked with Founder</button>
+    <button class="btn" onclick="openLink('https://example.com/action-required')">Refund Saved – Action Required</button>
+    <button class="btn" onclick="openLink('https://example.com/denied')">Refund – Denied</button>
+    <button class="btn" onclick="openLink('https://example.com/full')">Refund – Approved (Full)</button>
+    <button class="btn" onclick="openLink('https://example.com/partial')">Refund – Approved (Partial)</button>
+    <button class="btn" onclick="openLink('https://example.com/sent')">Refunded – Sent</button>
+    <button class="btn" onclick="openLink('https://example.com/deposit')">Refunded – Deposit Only</button>
+    <button class="btn" onclick="openLink('https://example.com/chargeback')">Chargeback</button>
+    <button class="btn" onclick="openLink('https://example.com/dispute-won')">Dispute – Won</button>
+    <button class="btn" onclick="openLink('https://example.com/dispute-lost')">Dispute – Lost</button>
+    <button class="btn" onclick="openLink('https://example.com/action-complete')">Refund Saved – Action Complete</button>
+
+  </div>
+
+</div>
+
+<script>
+  function openLink(url) {
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
